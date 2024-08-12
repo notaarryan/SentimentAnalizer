@@ -51,7 +51,3 @@ If you'd like to contribute to this project, please feel free to fork the reposi
 ## License
 
 This project is licensed under the MIT License.
-
----
-
-This README provides a clear overview of what the Sentiment Analyzer does, how it works, and how to use it. Let me know if you'd like to add or change anything!
