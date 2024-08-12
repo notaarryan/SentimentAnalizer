@@ -2,23 +2,24 @@ import java.util.Arrays;
 
 public class SentimentAnalyzer {
     // Tip: labeled continue can be used when iterating featureSet + convert review to lower-case
-    public static int[] detectProsAndCons(String review, String[][] featureSet, String[] posOpinionWords, String[] negOpinionWords) {
-        int[] featureOpinions = new int[featureSet.length]; // output
-
+    public static int[] detectProsAndCons(String review, String[][] featureSet,
+                                          String[] posOpinionWords,
+                                          String[] negOpinionWords) {
+        int[] featureOpinions = new int[featureSet.length];
         review = review.toLowerCase();
-
-        for (int i = 0; i<=featureSet.length;i++) {
-            loop : for (String[] features : featureSet) {
-                for (String feature : features) {
-                    if (review.contains(feature)) {
-                        int opinion = getOpinionOnFeature(review,feature,posOpinionWords,negOpinionWords);
+        nextFeature: for (int i = 0; i < featureSet.length; i++) {
+            String[] features = featureSet[i];
+            for (String feature : features) {
+                if (review.contains(feature)) {
+                    int opinion = getOpinionOnFeature(review,
+                            feature, posOpinionWords, negOpinionWords);
+                    if (opinion != 0) {
                         featureOpinions[i] = opinion;
-                        continue loop;
+                        continue nextFeature;
                     }
                 }
             }
         }
-
         return featureOpinions;
     }
 
@@ -26,7 +27,13 @@ public class SentimentAnalyzer {
     // if it cannot find an opinion only then invoke checkForOpinionFirstPattern
     private static int getOpinionOnFeature(String review, String feature, String[] posOpinionWords, String[] negOpinionWords) {
 
-        int opinion =
+        int opinion = checkForWasPhrasePattern(review,feature,posOpinionWords,negOpinionWords);
+
+        if (opinion == 0) {
+            opinion = checkForOpinionFirstPattern(review,feature,posOpinionWords,negOpinionWords);
+        }
+
+        return opinion;
 
     }
 
@@ -34,12 +41,29 @@ public class SentimentAnalyzer {
     // Return 1 if positive opinion found, -1 for negative opinion, 0 for no opinion
     // You can first look for positive opinion. If not found, only then you can look for negative opinion
     private static int checkForWasPhrasePattern(String review, String feature, String[] posOpinionWords, String[] negOpinionWords) {
-        int opinion = 0;
         String pattern = feature + " was ";
+        String[] sentences = review.split("\\.");
 
-        // your code
+        for (String sentence : sentences) {
+            int index = sentence.indexOf(pattern);
+            if (index>=0) {
+                String sub = review.substring(index+pattern.length()).trim();
 
-        return opinion;
+                for (String pos : posOpinionWords) {
+                    if (sub.startsWith(pos)) {
+                        return 1;
+                    }
+                }
+
+                for (String neg : negOpinionWords) {
+                    if (sub.startsWith(neg)) {
+                        return -1;
+                    }
+                }
+            }
+        }
+
+        return 0;
     }
 
     // You can first look for positive opinion. If not found, only then you can look for negative opinion
@@ -49,15 +73,30 @@ public class SentimentAnalyzer {
         // split() takes a regular expression and "." is a special character
         // for regular expression. So, escape it to make it work!!
         String[] sentences = review.split("\\.");
-        int opinion = 0;
 
-        // your code for processing each sentence. You can return if opinion is found in a sentence (no need to process subsequent ones)
 
-        return opinion;
+        for (String sentence : sentences) {
+            int index = sentence.indexOf(feature);
+            if (index>=0) {
+                for (String pos : posOpinionWords) {
+                    if (sentence.contains(pos)) {
+                        return 1;
+                    }
+                }
+
+                for (String neg : negOpinionWords) {
+                    if (sentence.contains(neg)) {
+                        return -1;
+                    }
+                }
+            }
+        }
+
+        return 0;
     }
 
     public static void main(String[] args) {
-        String review = "Haven't been here in years! Fantastic service and the food was delicious! Definetly will be a frequent flyer! Francisco was very attentive";
+        String review = "I chose two items from the new menu, the shrimp scampi and the shrimp and chicken carbonara, both with my favourite soup and some warm breadsticks. The soup was amazing, as always.";
 
         //String review = "Sorry OG, but you just lost some loyal customers. Horrible service, no smile or greeting just attitude. The breadsticks were stale and burnt, appetizer was cold and the food came out before the salad.";
 
