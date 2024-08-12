@@ -20,7 +20,7 @@ The **Sentiment Analyzer** is a Java-based tool that evaluates the sentiment of 
 ## Usage
 
 1. **Setup**: Ensure that your Java environment is set up.
-2. **Configuration**: Modify the `featureSet`, `posOpinionWords`, and `negOpinionWords` arrays to match the features and opinion words relevant to your use case.
+2. **Configuration**: Modify the `review`,`featureSet`, `posOpinionWords`,  `negOpinionWords` arrays to match the features and opinion words relevant to your use case.
 3. **Execution**: Run the `SentimentAnalyzer` class with a review string as input.
 
 ## Example
