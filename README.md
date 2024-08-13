@@ -2,7 +2,7 @@
 
 ## Description
 
-The **Sentiment Analyzer** is a Java-based tool that evaluates the sentiment of textual reviews by identifying key features and associating them with positive or negative opinions. This tool is designed to help users understand the sentiment expressed in a given review by analyzing specific features mentioned within the text.
+This is a very basic **Sentiment Analyzer** program, A **Sentiment Analyzer** is  a tool that evaluates the sentiment of textual reviews by identifying key features and associating them with positive or negative opinions. This tool is designed to help users understand the sentiment expressed in a given review by analyzing specific features mentioned within the text.
 
 ## Features
 
